@@ -66,7 +66,7 @@ void _writeCodec(Indent indent, Api api, Root root) {
   indent.write('private class $readerName: FlutterStandardReader ');
   indent.scoped('{', '}', () {
     if (getCodecClasses(api, root).isNotEmpty) {
-      indent.write('override func readValue(ofType type: UInt8) -> Any? ');
+      indent.write('override public func readValue(ofType type: UInt8) -> Any? ');
       indent.scoped('{', '}', () {
         indent.write('switch type ');
         indent.scoped('{', '}', () {
@@ -91,7 +91,7 @@ void _writeCodec(Indent indent, Api api, Root root) {
   indent.write('public class $writerName: FlutterStandardWriter ');
   indent.scoped('{', '}', () {
     if (getCodecClasses(api, root).isNotEmpty) {
-      indent.write('override func writeValue(_ value: Any) ');
+      indent.write('override public func writeValue(_ value: Any) ');
       indent.scoped('{', '}', () {
         indent.write('');
         for (final EnumeratedClass customClass in getCodecClasses(api, root)) {
@@ -113,13 +113,13 @@ void _writeCodec(Indent indent, Api api, Root root) {
   indent.write('public class $readerWriterName: FlutterStandardReaderWriter ');
   indent.scoped('{', '}', () {
     indent.write(
-        'override func reader(with data: Data) -> FlutterStandardReader ');
+        'override public func reader(with data: Data) -> FlutterStandardReader ');
     indent.scoped('{', '}', () {
       indent.writeln('return $readerName(data: data)');
     });
     indent.writeln('');
     indent.write(
-        'override func writer(with data: NSMutableData) -> FlutterStandardWriter ');
+        'override public func writer(with data: NSMutableData) -> FlutterStandardWriter ');
     indent.scoped('{', '}', () {
       indent.writeln('return $writerName(data: data)');
     });
