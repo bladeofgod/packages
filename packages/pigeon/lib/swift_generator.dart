@@ -173,12 +173,12 @@ void _writeHostApi(Indent indent, Api api, Root root) {
 
       if (method.isAsynchronous) {
         argSignature.add('completion: @escaping ($returnType) -> Void');
-        indent.writeln('public func ${method.name}(${argSignature.join(', ')})');
+        indent.writeln('func ${method.name}(${argSignature.join(', ')})');
       } else if (method.returnType.isVoid) {
-        indent.writeln('public func ${method.name}(${argSignature.join(', ')})');
+        indent.writeln('func ${method.name}(${argSignature.join(', ')})');
       } else {
         indent.writeln(
-            'public func ${method.name}(${argSignature.join(', ')}) -> $returnType');
+            'func ${method.name}(${argSignature.join(', ')}) -> $returnType');
       }
     }
   });
