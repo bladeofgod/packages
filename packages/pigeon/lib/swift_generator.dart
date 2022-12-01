@@ -290,7 +290,7 @@ void _writeFlutterApi(Indent indent, Api api, Root root) {
   indent.write('public class ${api.name} ');
   indent.scoped('{', '}', () {
     indent.writeln('private let binaryMessenger: FlutterBinaryMessenger');
-    indent.write('init(binaryMessenger: FlutterBinaryMessenger)');
+    indent.write('public init(binaryMessenger: FlutterBinaryMessenger)');
     indent.scoped('{', '}', () {
       indent.writeln('self.binaryMessenger = binaryMessenger');
     });
