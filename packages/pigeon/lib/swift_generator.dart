@@ -88,7 +88,7 @@ void _writeCodec(Indent indent, Api api, Root root) {
   });
 
   // Generate Writer
-  indent.write('private class $writerName: FlutterStandardWriter ');
+  indent.write('public class $writerName: FlutterStandardWriter ');
   indent.scoped('{', '}', () {
     if (getCodecClasses(api, root).isNotEmpty) {
       indent.write('override func writeValue(_ value: Any) ');
@@ -110,7 +110,7 @@ void _writeCodec(Indent indent, Api api, Root root) {
   indent.writeln('');
 
   // Generate ReaderWriter
-  indent.write('private class $readerWriterName: FlutterStandardReaderWriter ');
+  indent.write('public class $readerWriterName: FlutterStandardReaderWriter ');
   indent.scoped('{', '}', () {
     indent.write(
         'override func reader(with data: Data) -> FlutterStandardReader ');
@@ -150,7 +150,7 @@ void _writeHostApi(Indent indent, Api api, Root root) {
   addDocumentationComments(indent, api.documentationComments, _docCommentSpec,
       generatorComments: generatedComments);
 
-  indent.write('protocol $apiName ');
+  indent.write('public protocol $apiName ');
   indent.scoped('{', '}', () {
     for (final Method method in api.methods) {
       final List<String> argSignature = <String>[];
