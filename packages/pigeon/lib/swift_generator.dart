@@ -173,12 +173,12 @@ void _writeHostApi(Indent indent, Api api, Root root) {
 
       if (method.isAsynchronous) {
         argSignature.add('completion: @escaping ($returnType) -> Void');
-        indent.writeln('func ${method.name}(${argSignature.join(', ')})');
+        indent.writeln('public func ${method.name}(${argSignature.join(', ')})');
       } else if (method.returnType.isVoid) {
-        indent.writeln('func ${method.name}(${argSignature.join(', ')})');
+        indent.writeln('public func ${method.name}(${argSignature.join(', ')})');
       } else {
         indent.writeln(
-            'func ${method.name}(${argSignature.join(', ')}) -> $returnType');
+            'public func ${method.name}(${argSignature.join(', ')}) -> $returnType');
       }
     }
   });
@@ -186,7 +186,7 @@ void _writeHostApi(Indent indent, Api api, Root root) {
   indent.addln('');
   indent.writeln(
       '$_docCommentPrefix Generated setup class from Pigeon to handle messages through the `binaryMessenger`.');
-  indent.write('class ${apiName}Setup ');
+  indent.write('public class ${apiName}Setup ');
   indent.scoped('{', '}', () {
     final String codecName = _getCodecName(api);
     indent.writeln('$_docCommentPrefix The codec used by $apiName.');
@@ -199,7 +199,7 @@ void _writeHostApi(Indent indent, Api api, Root root) {
     indent.writeln(
         '$_docCommentPrefix Sets up an instance of `$apiName` to handle messages through the `binaryMessenger`.');
     indent.write(
-        'static func setUp(binaryMessenger: FlutterBinaryMessenger, api: $apiName?) ');
+        'static public func setUp(binaryMessenger: FlutterBinaryMessenger, api: $apiName?) ');
     indent.scoped('{', '}', () {
       for (final Method method in api.methods) {
         final String channelName = makeChannelName(api, method);
@@ -287,7 +287,7 @@ void _writeFlutterApi(Indent indent, Api api, Root root) {
   addDocumentationComments(indent, api.documentationComments, _docCommentSpec,
       generatorComments: generatedComments);
 
-  indent.write('class ${api.name} ');
+  indent.write('public class ${api.name} ');
   indent.scoped('{', '}', () {
     indent.writeln('private let binaryMessenger: FlutterBinaryMessenger');
     indent.write('init(binaryMessenger: FlutterBinaryMessenger)');
@@ -314,7 +314,7 @@ void _writeFlutterApi(Indent indent, Api api, Root root) {
 
       if (func.arguments.isEmpty) {
         indent.write(
-            'func ${func.name}(completion: @escaping ($returnType) -> Void) ');
+            'public func ${func.name}(completion: @escaping ($returnType) -> Void) ');
         sendArgument = 'nil';
       } else {
         final Iterable<String> argTypes = func.arguments
@@ -332,10 +332,10 @@ void _writeFlutterApi(Indent indent, Api api, Root root) {
                 '$label $name: $type').join(', ');
         if (func.returnType.isVoid) {
           indent.write(
-              'func ${func.name}($argsSignature, completion: @escaping () -> Void) ');
+              'public func ${func.name}($argsSignature, completion: @escaping () -> Void) ');
         } else {
           indent.write(
-              'func ${func.name}($argsSignature, completion: @escaping ($returnType) -> Void) ');
+              'public func ${func.name}($argsSignature, completion: @escaping ($returnType) -> Void) ');
         }
       }
       indent.scoped('{', '}', () {
@@ -494,7 +494,7 @@ import FlutterMacOS
     }
 
     void writeToMap() {
-      indent.write('func toMap() -> [String: Any?] ');
+      indent.write('public func toMap() -> [String: Any?] ');
       indent.scoped('{', '}', () {
         indent.write('return ');
         indent.scoped('[', ']', () {
@@ -524,7 +524,7 @@ import FlutterMacOS
     void writeFromMap() {
       final String className = klass.name;
       indent
-          .write('static func fromMap(_ map: [String: Any?]) -> $className? ');
+          .write('static public func fromMap(_ map: [String: Any?]) -> $className? ');
 
       indent.scoped('{', '}', () {
         for (final NamedType field in klass.fields) {
@@ -587,7 +587,7 @@ import FlutterMacOS
         indent, klass.documentationComments, _docCommentSpec,
         generatorComments: generatedComments);
 
-    indent.write('struct ${klass.name} ');
+    indent.write('public struct ${klass.name} ');
     indent.scoped('{', '}', () {
       klass.fields.forEach(writeField);
 
@@ -606,7 +606,7 @@ import FlutterMacOS
   }
 
   void writeWrapResult() {
-    indent.write('private func wrapResult(_ result: Any?) -> [String: Any?] ');
+    indent.write('public func wrapResult(_ result: Any?) -> [String: Any?] ');
     indent.scoped('{', '}', () {
       indent.writeln('return ["result": result]');
     });
@@ -614,7 +614,7 @@ import FlutterMacOS
 
   void writeWrapError() {
     indent.write(
-        'private func wrapError(_ error: FlutterError) -> [String: Any?] ');
+        'public func wrapError(_ error: FlutterError) -> [String: Any?] ');
     indent.scoped('{', '}', () {
       indent.write('return ');
       indent.scoped('[', ']', () {
