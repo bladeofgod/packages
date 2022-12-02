@@ -483,6 +483,27 @@ import FlutterMacOS
   }
 
   void writeDataClass(Class klass) {
+    void writeInitFunc() {
+      final List<String> argSignature = <String>[];
+      if(klass.fields.isNotEmpty) {
+        final Iterable<String> argTypes = klass.fields
+            .map((NamedType e) => _nullsafeSwiftTypeForDartType(e.type));
+        final Iterable<String> argNames = klass.fields
+            .map((NamedType e) => e.name);
+        argSignature
+            .addAll(map2(argTypes, argNames, (String argType, String argName) {
+          return '$argName: $argType';
+        }));
+      }
+
+      indent.write('public init(${argSignature.join(', ')}) ');
+      indent.scoped('{', '}', () {
+        for (final NamedType element in klass.fields) {
+          indent.writeln('self.${element.name} = ${element.name}');
+        }
+      });
+    }
+
     void writeField(NamedType field) {
       addDocumentationComments(
           indent, field.documentationComments, _docCommentSpec);
@@ -590,6 +611,9 @@ import FlutterMacOS
     indent.write('public struct ${klass.name} ');
     indent.scoped('{', '}', () {
       klass.fields.forEach(writeField);
+
+      indent.writeln('');
+      writeInitFunc();
 
       indent.writeln('');
       writeFromMap();
